@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/mauFade/fit-force/internal/formatter"
+	"github.com/mauFade/fit-force/internal/utils"
 )
 
 type User struct {
@@ -31,7 +31,7 @@ func NewUser(
 	height float64, // Recebe a altura em cm e usa uma função formatadora para salvar em pés
 	weight string,
 ) *User {
-	feet, inches := formatter.CMToFeet(height)
+	feet, inches := utils.CMToFeet(height)
 
 	heightStr := fmt.Sprintf("%d'%d\"", feet, inches)
 

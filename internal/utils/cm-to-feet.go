@@ -1,4 +1,4 @@
-package formatter
+package utils
 
 func CMToFeet(cm float64) (int, int) {
 	// converter altura em centímetros para polegadas
