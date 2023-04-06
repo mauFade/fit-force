@@ -22,5 +22,9 @@ func ConnectToDatabase() {
 	}
 
 	// Migrations
-	DB.AutoMigrate(&model.User{})
+	DB.AutoMigrate(
+		&model.User{},
+		&model.TrainingPlan{},
+		&model.Workout{},
+	)
 }

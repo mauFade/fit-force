@@ -79,3 +79,8 @@ func (user *User) Validate() error {
 
 	return nil
 }
+
+type UserRepository interface {
+	Create(user *User) error
+	FindById(user_id string) (*User, error)
+}
