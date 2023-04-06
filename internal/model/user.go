@@ -36,44 +36,45 @@ func NewUser(
 	heightStr := fmt.Sprintf("%d'%d\"", feet, inches)
 
 	return &User{
-		ID:       uuid.NewString(),
-		Name:     name,
-		Email:    email,
-		Password: password,
-		Age:      age,
-		Gender:   gender,
-		Height:   heightStr,
-		Weight:   weight,
+		ID:        uuid.NewString(),
+		Name:      name,
+		Email:     email,
+		Password:  password,
+		Age:       age,
+		Gender:    gender,
+		Height:    heightStr,
+		Weight:    weight,
+		CreatedAt: time.Now(),
 	}
 }
 
 func (user *User) Validate() error {
 	if user.ID == "" {
-		return errors.New("User ID is requried")
+		return errors.New("user ID is requried")
 	}
 
 	if user.Name == "" {
-		return errors.New("User name is required")
+		return errors.New("user name is required")
 	}
 
 	if user.Email == "" {
-		return errors.New("User email is required")
+		return errors.New("user email is required")
 	}
 
 	if user.Password == "" {
-		return errors.New("User password is required")
+		return errors.New("user password is required")
 	}
 
 	if user.Age == 0 {
-		return errors.New("User age is required")
+		return errors.New("user age is required")
 	}
 
 	if user.Gender == "" {
-		return errors.New("User gender is required")
+		return errors.New("user gender is required")
 	}
 
 	if user.Height == "" {
-		return errors.New("User height is required")
+		return errors.New("user height is required")
 	}
 
 	return nil

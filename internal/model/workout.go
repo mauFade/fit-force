@@ -27,19 +27,19 @@ func NewWorkout(name string, description string, exercises []string) *Workout {
 
 func (workout *Workout) Validate() error {
 	if workout.ID == "" {
-		return errors.New("ID is required")
+		return errors.New("workout ID is required")
 	}
 
 	if workout.Name == "" {
-		return errors.New("Workout name is required")
+		return errors.New("workout name is required")
 	}
 
 	if workout.Description == "" {
-		return errors.New("Workout description is required")
+		return errors.New("workout description is required")
 	}
 
 	if len(workout.Exercises) == 0 {
-		return errors.New("Workout requires at least one exercise")
+		return errors.New("workout requires at least one exercise")
 	}
 
 	return nil
