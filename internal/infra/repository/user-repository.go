@@ -32,3 +32,11 @@ func (repo *UserDatabaseRepository) FindById(user_id string) (*model.User, error
 
 	return user, nil
 }
+
+func (repo *UserDatabaseRepository) FindByEmail(user_email string) *model.User {
+	var user *model.User
+
+	repo.DB.Raw("SELECT * FROM users WHERE email = ?", user_email).Scan(&user)
+
+	return user
+}

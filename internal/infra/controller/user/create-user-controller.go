@@ -39,6 +39,8 @@ func CreateUserController(context *gin.Context) {
 		context.JSON(403, gin.H{
 			"error": err.Error(),
 		})
+
+		return
 	}
 
 	context.JSON(201, output)

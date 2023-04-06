@@ -1,6 +1,9 @@
 package usecase
 
 import (
+	"errors"
+	"time"
+
 	"github.com/mauFade/fit-force/internal/infra/repository"
 	"github.com/mauFade/fit-force/internal/model"
 )
@@ -15,6 +18,18 @@ type CreateUserInputDTO struct {
 	Weight   string
 }
 
+type CreateUserOutputDTO struct {
+	ID        string    `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	Age       int       `json:"age"`
+	Gender    string    `json:"gender"`
+	Height    string    `json:"height"`
+	Weight    string    `json:"weight"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
 type CreateuserUseCase struct {
 	UserRepository repository.UserDatabaseRepository
 }
@@ -25,7 +40,13 @@ func NewCreateUserUseCase(repo repository.UserDatabaseRepository) *CreateuserUse
 	}
 }
 
-func (use_case *CreateuserUseCase) Execute(data CreateUserInputDTO) (*model.User, error) {
+func (use_case *CreateuserUseCase) Execute(data CreateUserInputDTO) (*CreateUserOutputDTO, error) {
+	email_already_exist := use_case.UserRepository.FindByEmail(data.Email)
+
+	if email_already_exist != nil {
+		return nil, errors.New("this email is already in use")
+	}
+
 	user := model.NewUser(
 		data.Name,
 		data.Email,
@@ -44,5 +65,15 @@ func (use_case *CreateuserUseCase) Execute(data CreateUserInputDTO) (*model.User
 
 	use_case.UserRepository.Create(user)
 
-	return user, nil
+	return &CreateUserOutputDTO{
+		ID:        user.ID,
+		Name:      user.Name,
+		Email:     user.Email,
+		Age:       user.Age,
+		Gender:    user.Gender,
+		Height:    user.Height,
+		Weight:    user.Weight,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
+	}, nil
 }

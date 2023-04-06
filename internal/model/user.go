@@ -33,7 +33,7 @@ func NewUser(
 ) *User {
 	feet, inches := utils.CMToFeet(height)
 
-	heightStr := fmt.Sprintf("%d'%d\"", feet, inches)
+	heightStr := fmt.Sprintf("%d'%d", feet, inches)
 
 	return &User{
 		ID:        uuid.NewString(),
@@ -57,24 +57,28 @@ func (user *User) Validate() error {
 		return errors.New("user name is required")
 	}
 
-	if user.Email == "" {
-		return errors.New("user email is required")
+	if user.Email == "" || !utils.ValidateMail(user.Email) {
+		return errors.New("invalid or null email, please provide a valid one")
 	}
 
 	if user.Password == "" {
 		return errors.New("user password is required")
 	}
 
-	if user.Age == 0 {
+	if user.Age <= 0 {
 		return errors.New("user age is required")
 	}
 
-	if user.Gender == "" {
-		return errors.New("user gender is required")
+	if user.Gender == "" || !utils.Contains([]string{"male", "female", "non-specified"}, user.Gender) {
+		return errors.New("invalid user gender")
 	}
 
 	if user.Height == "" {
 		return errors.New("user height is required")
+	}
+
+	if user.Weight == "" {
+		return errors.New("user weight is required")
 	}
 
 	return nil
@@ -83,4 +87,5 @@ func (user *User) Validate() error {
 type UserRepository interface {
 	Create(user *User) error
 	FindById(user_id string) (*User, error)
+	FindByEmail(user_email string) *User
 }

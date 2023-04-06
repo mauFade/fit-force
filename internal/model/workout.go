@@ -11,11 +11,11 @@ type Workout struct {
 	ID          string
 	Name        string
 	Description string
-	Exercises   []string
+	Exercises   string
 	CreatedAt   time.Time
 }
 
-func NewWorkout(name string, description string, exercises []string) *Workout {
+func NewWorkout(name string, description string, exercises string) *Workout {
 	return &Workout{
 		ID:          uuid.NewString(),
 		Name:        name,
@@ -38,7 +38,7 @@ func (workout *Workout) Validate() error {
 		return errors.New("workout description is required")
 	}
 
-	if len(workout.Exercises) == 0 {
+	if workout.Exercises == "" {
 		return errors.New("workout requires at least one exercise")
 	}
 
