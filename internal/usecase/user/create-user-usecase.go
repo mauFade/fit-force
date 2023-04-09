@@ -4,6 +4,7 @@ import (
 	"errors"
 	"time"
 
+	"github.com/mauFade/fit-force/internal/infra/auth"
 	"github.com/mauFade/fit-force/internal/infra/repository"
 	"github.com/mauFade/fit-force/internal/model"
 )
@@ -28,6 +29,7 @@ type CreateUserOutputDTO struct {
 	Weight    string    `json:"weight"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+	Token     string    `json:"token"`
 }
 
 type CreateuserUseCase struct {
@@ -65,6 +67,13 @@ func (use_case *CreateuserUseCase) Execute(data CreateUserInputDTO) (*CreateUser
 
 	use_case.UserRepository.Create(user)
 
+	// Gera um token JWT
+	user_token, err := auth.GenerateToken(user.ID)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return &CreateUserOutputDTO{
 		ID:        user.ID,
 		Name:      user.Name,
@@ -75,5 +84,6 @@ func (use_case *CreateuserUseCase) Execute(data CreateUserInputDTO) (*CreateUser
 		Weight:    user.Weight,
 		CreatedAt: user.CreatedAt,
 		UpdatedAt: user.UpdatedAt,
+		Token:     user_token,
 	}, nil
 }
