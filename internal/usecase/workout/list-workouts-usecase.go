@@ -10,7 +10,7 @@ type ListWorkoutOutputDTO struct {
 	ID          string    `json:"id"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
-	Exercises   string    `json:"exercises"`
+	Exercises   []string  `json:"exercises"`
 	CreatedAt   time.Time `json:"created_at"`
 }
 
