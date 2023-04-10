@@ -2,7 +2,6 @@ package usecase
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/mauFade/fit-force/internal/infra/auth"
 	"github.com/mauFade/fit-force/internal/infra/repository"
@@ -36,13 +35,11 @@ func (use_case *AuthenticateUseCase) Execute(data AuthenticateInputDTO) (*Authen
 		return nil, errors.New("email or password not provided")
 	}
 
-	user := use_case.UserRepository.FindByEmail(data.Email)
+	user, err := use_case.UserRepository.FindByEmail(data.Email)
 
-	if user == nil {
+	if err != nil {
 		return nil, errors.New("user not found with this email")
 	}
-
-	fmt.Println(user.Password, data.Password)
 
 	passwordErr := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(data.Password))
 

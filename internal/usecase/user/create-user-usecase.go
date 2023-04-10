@@ -44,10 +44,14 @@ func NewCreateUserUseCase(repo repository.UserDatabaseRepository) *CreateUserUse
 }
 
 func (use_case *CreateUserUseCase) Execute(data CreateUserInputDTO) (*CreateUserOutputDTO, error) {
-	email_already_exist := use_case.UserRepository.FindByEmail(data.Email)
+	var creationError error
 
-	if email_already_exist != nil {
-		return nil, errors.New("this email is already in use")
+	_, err := use_case.UserRepository.FindByEmail(data.Email)
+
+	if err != nil {
+		creationError = errors.New("this email is already in use")
+
+		return nil, creationError
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.Password), 8)
