@@ -19,6 +19,8 @@ func main() {
 	// User routes
 	router.POST("/users", user_controller.CreateUserController)
 
+	router.POST("/login", user_controller.AuthenticateController)
+
 	// Workout routes
 	router.POST("/workouts", middleware.AuthMiddleware(), workout_controller.CreateWorkoutController)
 	router.GET("/workouts", middleware.AuthMiddleware(), workout_controller.ListWorkoutsController)
