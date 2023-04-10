@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/mauFade/fit-force/internal/infra/repository"
@@ -10,7 +11,7 @@ type ListWorkoutOutputDTO struct {
 	ID          string    `json:"id"`
 	Name        string    `json:"name"`
 	Description string    `json:"description"`
-	Exercises   string    `json:"exercises"`
+	Exercises   []string  `json:"exercises"`
 	CreatedAt   time.Time `json:"created_at"`
 }
 
@@ -36,11 +37,19 @@ func (use_case *ListWorkoutsUseCase) Execute() []*ListWorkoutOutputDTO {
 	}
 
 	for _, workout := range workouts {
+		var exercisesArr []string
+
+		err := json.Unmarshal([]byte(workout.Exercises), &exercisesArr)
+
+		if err != nil {
+			exercisesArr = []string{}
+		}
+
 		listWorkoutsOutput = append(listWorkoutsOutput, &ListWorkoutOutputDTO{
 			ID:          workout.ID,
 			Name:        workout.Name,
 			Description: workout.Description,
-			Exercises:   workout.Exercises,
+			Exercises:   exercisesArr,
 			CreatedAt:   workout.CreatedAt,
 		})
 	}
