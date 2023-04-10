@@ -33,16 +33,10 @@ func (repo *UserDatabaseRepository) FindById(user_id string) (*model.User, error
 	return user, nil
 }
 
-func (repo *UserDatabaseRepository) FindByEmail(user_email string) (*model.User, error) {
-	var user model.User
+func (repo *UserDatabaseRepository) FindByEmail(user_email string) *model.User {
+	var user *model.User
 
-	if err := repo.DB.Where("email = ?", user_email).First(&user).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, nil
-		}
+	repo.DB.Raw("SELECT * FROM users WHERE email = ?", user_email).Scan(&user)
 
-		return nil, err
-	}
-
-	return &user, nil
+	return user
 }

@@ -46,9 +46,9 @@ func NewCreateUserUseCase(repo repository.UserDatabaseRepository) *CreateUserUse
 func (use_case *CreateUserUseCase) Execute(data CreateUserInputDTO) (*CreateUserOutputDTO, error) {
 	var creationError error
 
-	_, err := use_case.UserRepository.FindByEmail(data.Email)
+	userAlreadyExists := use_case.UserRepository.FindByEmail(data.Email)
 
-	if err != nil {
+	if userAlreadyExists != nil {
 		creationError = errors.New("this email is already in use")
 
 		return nil, creationError

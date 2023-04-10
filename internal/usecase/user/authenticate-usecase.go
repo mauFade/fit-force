@@ -35,9 +35,9 @@ func (use_case *AuthenticateUseCase) Execute(data AuthenticateInputDTO) (*Authen
 		return nil, errors.New("email or password not provided")
 	}
 
-	user, err := use_case.UserRepository.FindByEmail(data.Email)
+	user := use_case.UserRepository.FindByEmail(data.Email)
 
-	if err != nil {
+	if user == nil {
 		return nil, errors.New("user not found with this email")
 	}
 
