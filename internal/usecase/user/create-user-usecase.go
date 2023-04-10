@@ -7,6 +7,7 @@ import (
 	"github.com/mauFade/fit-force/internal/infra/auth"
 	"github.com/mauFade/fit-force/internal/infra/repository"
 	"github.com/mauFade/fit-force/internal/model"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type CreateUserInputDTO struct {
@@ -49,17 +50,23 @@ func (use_case *CreateUserUseCase) Execute(data CreateUserInputDTO) (*CreateUser
 		return nil, errors.New("this email is already in use")
 	}
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(data.Password), 8)
+
+	if err != nil {
+		return nil, err
+	}
+
 	user := model.NewUser(
 		data.Name,
 		data.Email,
-		data.Password,
+		string(hashedPassword),
 		data.Age,
 		data.Gender,
 		data.Height,
 		data.Weight,
 	)
 
-	err := user.Validate()
+	err = user.Validate()
 
 	if err != nil {
 		return nil, err
