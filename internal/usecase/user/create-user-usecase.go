@@ -32,17 +32,17 @@ type CreateUserOutputDTO struct {
 	Token     string    `json:"token"`
 }
 
-type CreateuserUseCase struct {
+type CreateUserUseCase struct {
 	UserRepository repository.UserDatabaseRepository
 }
 
-func NewCreateUserUseCase(repo repository.UserDatabaseRepository) *CreateuserUseCase {
-	return &CreateuserUseCase{
+func NewCreateUserUseCase(repo repository.UserDatabaseRepository) *CreateUserUseCase {
+	return &CreateUserUseCase{
 		UserRepository: repo,
 	}
 }
 
-func (use_case *CreateuserUseCase) Execute(data CreateUserInputDTO) (*CreateUserOutputDTO, error) {
+func (use_case *CreateUserUseCase) Execute(data CreateUserInputDTO) (*CreateUserOutputDTO, error) {
 	email_already_exist := use_case.UserRepository.FindByEmail(data.Email)
 
 	if email_already_exist != nil {
