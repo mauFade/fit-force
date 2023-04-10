@@ -20,6 +20,7 @@ func main() {
 	router.POST("/users", user_controller.CreateUserController)
 
 	// Workout routes
+	router.POST("/workouts", middleware.AuthMiddleware(), workout_controller.CreateWorkoutController)
 	router.GET("/workouts", middleware.AuthMiddleware(), workout_controller.ListWorkoutsController)
 
 	router.Run()

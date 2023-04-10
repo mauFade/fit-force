@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/mauFade/fit-force/internal/infra/repository"
@@ -8,7 +9,6 @@ import (
 )
 
 type CreateWorkoutInputDTO struct {
-	ID          string
 	Name        string
 	Description string
 	Exercises   []string
@@ -33,9 +33,17 @@ func NewCreateWorkoutUseCase(repo repository.WorkoutDatabaseRepository) *CreateW
 }
 
 func (use_case *CreateWorkoutUseCase) Execute(data CreateWorkoutInputDTO) (*CreateWorkoutOutputDTO, error) {
-	workout := model.NewWorkout(data.Name, data.Description, data.Exercises)
+	jsonBytes, err := json.Marshal(data.Exercises)
 
-	err := workout.Validate()
+	if err != nil {
+		return nil, err
+	}
+
+	exercises := string(jsonBytes)
+
+	workout := model.NewWorkout(data.Name, data.Description, exercises)
+
+	err = workout.Validate()
 
 	if err != nil {
 		return nil, err
@@ -43,11 +51,19 @@ func (use_case *CreateWorkoutUseCase) Execute(data CreateWorkoutInputDTO) (*Crea
 
 	use_case.WorkoutRepository.Create(workout)
 
+	var exercisesArr []string
+
+	err = json.Unmarshal([]byte(exercises), &exercisesArr)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return &CreateWorkoutOutputDTO{
 		ID:          workout.ID,
 		Name:        workout.Name,
 		Description: workout.Description,
-		Exercises:   workout.Exercises,
+		Exercises:   exercisesArr,
 		CreatedAt:   workout.CreatedAt,
 	}, nil
 }
