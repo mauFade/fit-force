@@ -9,6 +9,8 @@ import (
 
 type TrainingPlan struct {
 	ID          string
+	UserID      string
+	WorkoutID   string
 	Name        string
 	Description string
 	Objective   string
@@ -16,9 +18,11 @@ type TrainingPlan struct {
 	CreatedAt   time.Time
 }
 
-func NewTrainingPLan(name string, description string, objective string, duration string) *TrainingPlan {
+func NewTrainingPLan(name string, user_id string, workout_id string, description string, objective string, duration string) *TrainingPlan {
 	return &TrainingPlan{
 		ID:          uuid.NewString(),
+		UserID:      user_id,
+		WorkoutID:   workout_id,
 		Name:        name,
 		Description: description,
 		Objective:   objective,
