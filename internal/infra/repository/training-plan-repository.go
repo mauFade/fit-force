@@ -2,6 +2,12 @@ package repository
 
 import "gorm.io/gorm"
 
-type TariningPlanDatabaseRepository struct {
+type TrainingPlanDatabaseRepository struct {
 	DB *gorm.DB
+}
+
+func NewTrainigPlanRepository(database *gorm.DB) *TrainingPlanDatabaseRepository {
+	return &TrainingPlanDatabaseRepository{
+		DB: database,
+	}
 }
