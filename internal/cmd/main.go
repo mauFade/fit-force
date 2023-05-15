@@ -27,6 +27,7 @@ func main() {
 	router.GET("/workouts", middleware.AuthMiddleware(), workout_controller.ListWorkoutsController)
 
 	router.POST("/training-plan", middleware.AuthMiddleware(), trainingplan_controller.CreateTrainingPlanController)
+	router.GET("/training-plan", middleware.AuthMiddleware(), trainingplan_controller.ListTrainingPlanController)
 
 	router.Run()
 }
